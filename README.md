@@ -1,1 +1,1 @@
-# bog-practice
+# algorithm-practice
