@@ -9,10 +9,6 @@ const edges = inputs.slice(1, E + 1);
 const [v1, v2] = inputs[inputs.length - 1].split(" ").map(Number);
 
 const graph = Array.from({ length: N + 1 }, () => []);
-// 1 -> v1 -> v2 -> N
-let case1 = 0;
-// 1 -> v2 -> v1 -> N
-let case2 = 0;
 
 for(let i = 0; i < E; i++) {
     const [start, end, cost] = edges[i].split(" ");
@@ -21,13 +17,17 @@ for(let i = 0; i < E; i++) {
     graph[+end].push([+start, +cost]);
 }
 
-case1 += dijkstra(1, v1);
-case1 += dijkstra(v1, v2);
-case1 += dijkstra(v2, N);
+// 1 ~ N
+let dist = dijkstra(1);
+// v1 ~ N
+let dist2 = dijkstra(v1);
+// v2 ~ N
+let dist3 = dijkstra(v2);
 
-case2 += dijkstra(1, v2);
-case2 += dijkstra(v2, v1);
-case2 += dijkstra(v1, N);
+// 1 -> v1 -> v2 -> N
+let case1 = dist[v1] + dist2[v2] + dist3[N];
+// 1 -> v2 -> v1 -> N
+let case2 = dist[v2] + dist3[v1] + dist2[N];
 
 if(case1 == Infinity && case2 == Infinity) {
     console.log(-1)
@@ -35,7 +35,7 @@ if(case1 == Infinity && case2 == Infinity) {
     console.log(Math.min(case1, case2));
 }
 
-function dijkstra(start, end) {
+function dijkstra(start) {
     const distances = Array.from({ length: N + 1 }, () => Infinity);
     
     const queue = [[start, 0]];
@@ -56,5 +56,5 @@ function dijkstra(start, end) {
         }
     }
     
-    return distances[end];
+    return distances;
 }
