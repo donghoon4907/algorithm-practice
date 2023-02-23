@@ -2,8 +2,6 @@ const { readFileSync } = require("fs");
 
 const [T, ...tc] = readFileSync("/dev/stdin").toString().trim().split("\n");
 
-const stack = [];
-
 const answer = [];
 
 outer: for(let i = 0; i < +T; i++) {
